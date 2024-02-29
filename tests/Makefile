@@ -53,6 +53,8 @@ venom-qpid.cid:
 venom-grpc.cid:
 	docker build -t venom-grpc-greeter ./grpc
 	$(call docker_run,venom-grpc-greeter,grpc,-p 50051:50051)
+venom-s3.cid:
+	$(call docker_run,s3,s3,-p 9000:9000)
 
 start-test-stack: venom-postgres.cid
 start-test-stack: venom-mysql.cid
@@ -66,6 +68,7 @@ start-test-stack: venom-mqtt.cid
 start-test-stack: venom-qpid.cid
 start-test-stack: $(PKI_DIR)
 start-test-stack: venom-grpc.cid
+start-test-stack: venom-s3.cid
 
 stop-test-stack:
 	@for f in `ls -1 *.cid`; do docker stop `cat $${f}`; docker rm `cat $${f}`; done; rm -f *.cid; docker network rm $(docker-network)

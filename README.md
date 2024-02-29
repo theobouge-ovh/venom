@@ -7,46 +7,46 @@ Venom is a CLI (Command Line Interface) that aim to create, manage and run your 
 [![Go Report Card](https://goreportcard.com/badge/github.com/ovh/venom)](https://goreportcard.com/report/github.com/ovh/venom)
 [![Discussions](https://img.shields.io/badge/Discussions-OVHcloud-brightgreen)](https://github.com/ovh/venom/discussions)
 <a href="https://gitpod.io/#https://github.com/ovh/venom"><img src="https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod" alt="Contribute with Gitpod"/></a>
- 
+
 # Table of content
 
-* [Overview](#overview)
-* [Installing](#installing)
-* [Updating](#updating)
-* [Docker image](#docker-image)
-* [CLI usage](#cli-usage)
-  * [Globstar support](#globstar-support)
-  * [Variables](#variables)
-    * [Variable Definitions Files](#variable-definitions-files)
-    * [Environment Variables](#environment-variables)
-  * [Arguments](#arguments)
-    * [Define arguments with environment variables](#define-arguments-with-environment-variables)
-    * [Use a configuration file](#use-a-configuration-file)
-* [Concepts](#concepts)
-  * [TestSuites](#testsuites)
-  * [Executors](#executors)
-    * [User defined executors](#user-defined-executors)
-  * [Variables](#variables)
-    * [Testsuite variables](#testsuite-variables)
-    * [Variable helpers](#variable-helpers)
-  * [Use outputs from a test step as input of another test step](#use-outputs-from-a-test-step-as-input-of-another-test-step)
-  * [Builtin venom variables](#builtin-venom-variables)
-  * [Assertions](#assertions)
-    * [Keywords](#keywords)
-      * [`Must` Keywords](#must-keywords)
-    * [Using logical operators](#using-logical-operators)
-* [Write and run your first test suite](#write-and-run-your-first-test-suite)
-* [Export tests report](#export-tests-report)
-* [Advanced usage](#advanced-usage)
-  * [Debug your testsuites](#debug-your-testsuites)
-  * [Skip testcase and teststeps](#skip-testcase-and-teststeps)
-  * [Iterating over data](#iterating-over-data)
-* [FAQ](#faq)
-  * [Common errors with quotes](#common-errors-with-quotes)
-* [Use venom in CI/CD pipelines](#use-venom-in-cicd-pipelines)
-* [Hacking](#hacking)
-* [Contributing](#contributing)
-* [License](#license)
+- [Overview](#overview)
+- [Installing](#installing)
+- [Updating](#updating)
+- [Docker image](#docker-image)
+- [CLI usage](#cli-usage)
+  - [Globstar support](#globstar-support)
+  - [Variables](#variables)
+    - [Variable Definitions Files](#variable-definitions-files)
+    - [Environment Variables](#environment-variables)
+  - [Arguments](#arguments)
+    - [Define arguments with environment variables](#define-arguments-with-environment-variables)
+    - [Use a configuration file](#use-a-configuration-file)
+- [Concepts](#concepts)
+  - [TestSuites](#testsuites)
+  - [Executors](#executors)
+    - [User defined executors](#user-defined-executors)
+  - [Variables](#variables)
+    - [Testsuite variables](#testsuite-variables)
+    - [Variable helpers](#variable-helpers)
+  - [Use outputs from a test step as input of another test step](#use-outputs-from-a-test-step-as-input-of-another-test-step)
+  - [Builtin venom variables](#builtin-venom-variables)
+  - [Assertions](#assertions)
+    - [Keywords](#keywords)
+      - [`Must` Keywords](#must-keywords)
+    - [Using logical operators](#using-logical-operators)
+- [Write and run your first test suite](#write-and-run-your-first-test-suite)
+- [Export tests report](#export-tests-report)
+- [Advanced usage](#advanced-usage)
+  - [Debug your testsuites](#debug-your-testsuites)
+  - [Skip testcase and teststeps](#skip-testcase-and-teststeps)
+  - [Iterating over data](#iterating-over-data)
+- [FAQ](#faq)
+  - [Common errors with quotes](#common-errors-with-quotes)
+- [Use venom in CI/CD pipelines](#use-venom-in-cicd-pipelines)
+- [Hacking](#hacking)
+- [Contributing](#contributing)
+- [License](#license)
 
 # Overview
 
@@ -54,7 +54,7 @@ Venom allows you to handle integration tests the same way you code your applicat
 With Venom, testcases will be managed as code: the readability of the tests means that the tests are part of the code reviews. Thanks to that, write and execute testsuites become easier for developers and teams.
 
 Concretely, you have to write testsuite in a YAML file.
-Venom run executors (scripts, HTTP Request, web, IMAP, etc.) and apply assertions. 
+Venom run executors (scripts, HTTP Request, web, IMAP, etc.) and apply assertions.
 It can also generate xUnit result files.
 
 <img src="./venom.gif" alt="Venom Demonstration">
@@ -92,18 +92,18 @@ Check the new version with `venom version` command:
 
 ```bash
 $ venom version
-Version venom: v1.1.0 
+Version venom: v1.1.0
 ```
 
 # Docker image
 
-Instead of installing (and updating) Venom locally, Venom can be started as a Docker image with following commands. 
+Instead of installing (and updating) Venom locally, Venom can be started as a Docker image with following commands.
 
 Considering your testsuites are in `./tests` directory in your current directory and your test library is under `./tests/lib`, the results will be available under the `results` directory.
 
 ```bash
 $ mkdir -p results
-$ docker run --mount type=bind,source=$(pwd)/tests,target=/workdir/tests --mount type=bind,source=$(pwd)/results,target=/workdir/results ovhcom/venom:latest 
+$ docker run --mount type=bind,source=$(pwd)/tests,target=/workdir/tests --mount type=bind,source=$(pwd)/results,target=/workdir/results ovhcom/venom:latest
 ```
 
 Please refer to https://hub.docker.com/r/ovhcom/venom/tags to get the available image tags.
@@ -168,7 +168,7 @@ Flags:
 
 ## Run test suites in a specific order
 
-- `venom run 01_foo.yml 02_foo.yml` will run 01 before 02. 
+- `venom run 01_foo.yml 02_foo.yml` will run 01 before 02.
 - `venom run 02_foo.yml 01_foo.yml` will run 02 before 01.
 
 If you want to sort many testsuite files, you can use standard commands, example:
@@ -271,7 +271,7 @@ It is possible to set `NO_COLOR=1` environment variable to disable colors from o
 You can define the Venom settings using a configuration file `.venomrc`. This configuration file should be placed in the current directory or in the `home` directory.
 
 ```yml
-variables: 
+variables:
   - foo=bar
 variables_files:
   - my_var_file.yaml
@@ -283,7 +283,6 @@ verbosity: 3
 ```
 
 Please note that the command line flags overrides the configuration file. The configuration file overrides the environment variables.
-
 
 # Concepts
 
@@ -297,69 +296,68 @@ In `venom` the testcases are executed sequentially within a testsuite. Each test
 In `venom` a testsuite is written in one `YAML` file respecting the following structure:
 
 ```yaml
-
 name: Title of TestSuite
 testcases:
-- name: TestCase with default value, exec cmd. Check if exit code != 1
-  steps:
-  - script: echo 'foo'
-    type: exec
+  - name: TestCase with default value, exec cmd. Check if exit code != 1
+    steps:
+      - script: echo 'foo'
+        type: exec
 
-- name: Title of First TestCase
-  steps:
-  - script: echo 'foo'
-    assertions:
-    - result.code ShouldEqual 0
-  - script: echo 'bar'
-    assertions:
-    - result.systemout ShouldNotContainSubstring foo
-    - result.timeseconds ShouldBeLessThan 1
+  - name: Title of First TestCase
+    steps:
+      - script: echo 'foo'
+        assertions:
+          - result.code ShouldEqual 0
+      - script: echo 'bar'
+        assertions:
+          - result.systemout ShouldNotContainSubstring foo
+          - result.timeseconds ShouldBeLessThan 1
 
-- name: GET http testcase, with 5 seconds timeout
-  steps:
-  - type: http
-    method: GET
-    url: https://eu.api.ovh.com/1.0/
-    timeout: 5
-    assertions:
-    - result.body ShouldContainSubstring /dedicated/server
-    - result.body ShouldContainSubstring /ipLoadbalancing
-    - result.statuscode ShouldEqual 200
-    - result.timeseconds ShouldBeLessThan 1
+  - name: GET http testcase, with 5 seconds timeout
+    steps:
+      - type: http
+        method: GET
+        url: https://eu.api.ovh.com/1.0/
+        timeout: 5
+        assertions:
+          - result.body ShouldContainSubstring /dedicated/server
+          - result.body ShouldContainSubstring /ipLoadbalancing
+          - result.statuscode ShouldEqual 200
+          - result.timeseconds ShouldBeLessThan 1
 
-- name: Test with retries and delay in seconds between each try
-  steps:
-  - type: http
-    method: GET
-    url: https://eu.api.ovh.com/1.0/
-    retry: 3
-    retry_if: # (optional, lets you early break unrecoverable errors)
-    - result.statuscode ShouldNotEqual 403
-    delay: 2
-    assertions:
-    - result.statuscode ShouldEqual 200
-
+  - name: Test with retries and delay in seconds between each try
+    steps:
+      - type: http
+        method: GET
+        url: https://eu.api.ovh.com/1.0/
+        retry: 3
+        retry_if: # (optional, lets you early break unrecoverable errors)
+          - result.statuscode ShouldNotEqual 403
+        delay: 2
+        assertions:
+          - result.statuscode ShouldEqual 200
 ```
 
 ## Executors
 
-* **amqp**: https://github.com/ovh/venom/tree/master/executors/amqp
-* **dbfixtures**: https://github.com/ovh/venom/tree/master/executors/dbfixtures
-* **exec**: https://github.com/ovh/venom/tree/master/executors/exec `exec` is the default type for a step
-* **grpc**: https://github.com/ovh/venom/tree/master/executors/grpc
-* **http**: https://github.com/ovh/venom/tree/master/executors/http
-* **imap**: https://github.com/ovh/venom/tree/master/executors/imap
-* **kafka** https://github.com/ovh/venom/tree/master/executors/kafka
-* **mqtt** https://github.com/ovh/venom/tree/master/executors/mqtt
-* **odbc**: https://github.com/ovh/venom/tree/master/executors/plugins/odbc
-* **ovhapi**: https://github.com/ovh/venom/tree/master/executors/ovhapi
-* **rabbitmq**: https://github.com/ovh/venom/tree/master/executors/rabbitmq
-* **readfile**: https://github.com/ovh/venom/tree/master/executors/readfile
-* **redis**: https://github.com/ovh/venom/tree/master/executors/redis
-* **smtp**: https://github.com/ovh/venom/tree/master/executors/smtp
-* **sql**: https://github.com/ovh/venom/tree/master/executors/sql
-* **ssh**: https://github.com/ovh/venom/tree/master/executors/ssh
-* **web**: https://github.com/ovh/venom/tree/master/executors/web
+- **amqp**: https://github.com/ovh/venom/tree/master/executors/amqp
+- **dbfixtures**: https://github.com/ovh/venom/tree/master/executors/dbfixtures
+- **exec**: https://github.com/ovh/venom/tree/master/executors/exec `exec` is the default type for a step
+- **grpc**: https://github.com/ovh/venom/tree/master/executors/grpc
+- **http**: https://github.com/ovh/venom/tree/master/executors/http
+- **imap**: https://github.com/ovh/venom/tree/master/executors/imap
+- **kafka** https://github.com/ovh/venom/tree/master/executors/kafka
+- **mqtt** https://github.com/ovh/venom/tree/master/executors/mqtt
+- **odbc**: https://github.com/ovh/venom/tree/master/executors/plugins/odbc
+- **ovhapi**: https://github.com/ovh/venom/tree/master/executors/ovhapi
+- **rabbitmq**: https://github.com/ovh/venom/tree/master/executors/rabbitmq
+- **readfile**: https://github.com/ovh/venom/tree/master/executors/readfile
+- **redis**: https://github.com/ovh/venom/tree/master/executors/redis
+- **s3**: [https://github.com/ovh/venom/tree/master/executors/redis](executors/s3/README.md)
+- **smtp**: https://github.com/ovh/venom/tree/master/executors/smtp
+- **sql**: https://github.com/ovh/venom/tree/master/executors/sql
+- **ssh**: https://github.com/ovh/venom/tree/master/executors/ssh
+- **web**: https://github.com/ovh/venom/tree/master/executors/web
 
 ### User defined executors
 
@@ -374,14 +372,14 @@ executor: hello
 input:
   myarg: {}
 steps:
-- script: echo "{\"hello\":\"{{.input.myarg}}\"}"
-  assertions:
-  - result.code ShouldEqual 0
-  vars:
-    hello:
-      from: result.systemoutjson.hello
-    all:
-      from: result.systemoutjson
+  - script: echo "{\"hello\":\"{{.input.myarg}}\"}"
+    assertions:
+      - result.code ShouldEqual 0
+    vars:
+      hello:
+        from: result.systemoutjson.hello
+      all:
+        from: result.systemoutjson
 output:
   display:
     hello: "{{.hello}}"
@@ -393,35 +391,35 @@ file `testsuite.yml`:
 ```yml
 name: testsuite with a user executor
 testcases:
-- name: testA
-  steps:
-  - type: hello
-    myarg: World
-    assertions:
-    - result.display.hello ShouldContainSubstring World
-    - result.alljson.hello ShouldContainSubstring World
+  - name: testA
+    steps:
+      - type: hello
+        myarg: World
+        assertions:
+          - result.display.hello ShouldContainSubstring World
+          - result.alljson.hello ShouldContainSubstring World
 ```
 
 Notice the variable `alljson`. All variables declared in output are automatically converted in a json format with the suffix `json`. In the example above, two implicit variables are available: `displayjson.hello` and `alljson`.
 
-Venom will load user's executors from the directory `lib/` relative to the testsuite path. You add executors source path using the flag `--lib-dir`. 
+Venom will load user's executors from the directory `lib/` relative to the testsuite path. You add executors source path using the flag `--lib-dir`.
 Note that all folders listed with `--lib-dir` will be scanned recursively to find `.yml` files as user executors.
 
-The user defined executors work with templating, you can check the templating result in `venom.log`. In this file, if you see an error as `error converting YAML to JSON: yaml: line 14: found unexpected end of stream`, you probably need to adjust indentation with the templating function `indent`. 
+The user defined executors work with templating, you can check the templating result in `venom.log`. In this file, if you see an error as `error converting YAML to JSON: yaml: line 14: found unexpected end of stream`, you probably need to adjust indentation with the templating function `indent`.
 
 Example:
 
 ```yml
 name: testsuite with a user executor multilines
 testcases:
-- name: test
-  steps:
-  - type: multilines
-    script: |
-      # test multilines
-      echo "5"
-    assertions:
-    - result.alljson ShouldEqual 5
+  - name: test
+    steps:
+      - type: multilines
+        script: |
+          # test multilines
+          echo "5"
+        assertions:
+          - result.alljson ShouldEqual 5
 ```
 
 using this executor:
@@ -431,24 +429,23 @@ executor: multilines
 input:
   script: "echo 'foo'"
 steps:
-- type: exec
-  script: {{ .input.script | nindent 4 }}
-  assertions:
-  - result.code ShouldEqual 0
-  vars:
-    all:
-      from: result.systemoutjson
+  - type: exec
+    script: { { .input.script | nindent 4 } }
+    assertions:
+      - result.code ShouldEqual 0
+    vars:
+      all:
+        from: result.systemoutjson
 output:
-  all: '{{.all}}'
+  all: "{{.all}}"
 ```
-
 
 ```bash
 # lib/*.yml files will be loaded as executors.
-$ venom run testsuite.yml 
+$ venom run testsuite.yml
 
 # executors will be loaded from /etc/venom/lib, $HOME/venom.d/lib and lib/ directory relative to testsuite.yml file.
-$ venom run --lib-dir=/etc/venom/lib:$HOME/venom.d/lib testsuite.yml 
+$ venom run --lib-dir=/etc/venom/lib:$HOME/venom.d/lib testsuite.yml
 ```
 
 ## Variables
@@ -466,29 +463,27 @@ vars:
   aString: '{"foo": "bar"}'
 
 testcases:
-- name: first-test-case
-  steps:
-  - type: exec
-    script: echo '{{.foo}} {{.biz.bar}}'
-    assertions:
-    - result.code ShouldEqual 0
-    - result.systemout ShouldEqual "foo bar"
+  - name: first-test-case
+    steps:
+      - type: exec
+        script: echo '{{.foo}} {{.biz.bar}}'
+        assertions:
+          - result.code ShouldEqual 0
+          - result.systemout ShouldEqual "foo bar"
 
-- name: foobar
-  steps:
-  - script: echo '{{.aString}}'
-    info: value of aString is {{.aString}}
-    assertions:
-    - result.systemoutjson.foo ShouldEqual bar
-...
+  - name: foobar
+    steps:
+      - script: echo '{{.aString}}'
+        info: value of aString is {{.aString}}
+        assertions:
+          - result.systemoutjson.foo ShouldEqual bar
 ```
 
 Each user variable used in testsuite must be declared in this section. You can override its value at runtime in a number of ways:
+
 - Individually, with the `--var` command line option.
 - In variable definitions files, either specified on the command line `--var-from-file`.
 - As environment variables.
-
-
 
 ### Variable helpers
 
@@ -531,13 +526,13 @@ Available helpers and some examples:
 - `toPrettyJSON`
 - `b64enc`
 - `b64dec` {{.result.bodyjson | b64enc}}
-- `escape`: replace ‘_‘, ‘/’, ‘.’ by ‘-’
+- `escape`: replace ‘\_‘, ‘/’, ‘.’ by ‘-’
 
 More examples are available [here](https://github.com/ovh/venom/tree/master/variable_helpers.md)
 
 ## Use outputs from a test step as input of another test step
 
-To be able to reuse a property from a teststep in a following testcase or step, you have to extract the variable, as the following example. 
+To be able to reuse a property from a teststep in a following testcase or step, you have to extract the variable, as the following example.
 
 After the first step execution, `venom` extracts a value using a regular expression `foo with a ([a-z]+) here` from the content of the `result.systemout` property returned by the `executor`.
 Then this variable can be reused in another test, with the name `testA.myvariable` with `testA` corresponding to the name of the testcase. A default value could also be supplied if the variable can't be extracted from the output, which can commonly happen when parsing json output.
@@ -545,23 +540,23 @@ Then this variable can be reused in another test, with the name `testA.myvariabl
 ```yaml
 name: MyTestSuite
 testcases:
-- name: testA
-  steps:
-  - type: exec
-    script: echo 'foo with a bar here'
-    vars:
-      myvariable:
-        from: result.systemout
-        regex: foo with a ([a-z]+) here
-        default: "somevalue"
+  - name: testA
+    steps:
+      - type: exec
+        script: echo 'foo with a bar here'
+        vars:
+          myvariable:
+            from: result.systemout
+            regex: foo with a ([a-z]+) here
+            default: "somevalue"
 
-- name: testB
-  steps:
-  - type: exec
-    script: echo {{.testA.myvariable}}
-    assertions:
-    - result.code ShouldEqual 0
-    - result.systemout ShouldContainSubstring bar
+  - name: testB
+    steps:
+      - type: exec
+        script: echo {{.testA.myvariable}}
+        assertions:
+          - result.code ShouldEqual 0
+          - result.systemout ShouldContainSubstring bar
 ```
 
 ## Builtin venom variables
@@ -569,30 +564,28 @@ testcases:
 ```yaml
 name: MyTestSuite
 testcases:
-- name: testA
-  steps:
-  - type: exec
-    script: echo '{{.venom.testsuite}} {{.venom.testsuite.filename}} {{.venom.testcase}} {{.venom.teststep.number}} {{.venom.datetime}} {{.venom.timestamp}}'
-    # will display something as: MyTestSuite MyTestSuiteWithVenomBuiltinVar.yml testA 0 2018-08-05T21:38:24+02:00 1533497904
-
+  - name: testA
+    steps:
+      - type: exec
+        script: echo '{{.venom.testsuite}} {{.venom.testsuite.filename}} {{.venom.testcase}} {{.venom.teststep.number}} {{.venom.datetime}} {{.venom.timestamp}}'
+        # will display something as: MyTestSuite MyTestSuiteWithVenomBuiltinVar.yml testA 0 2018-08-05T21:38:24+02:00 1533497904
 ```
 
 Builtin variables:
 
-* {{.venom.datetime}}
-* {{.venom.executable}}
-* {{.venom.libdir}}
-* {{.venom.outputdir}}
-* {{.venom.testcase}}
-* {{.venom.teststep.number}}
-* {{.venom.testsuite.name}}
-* {{.venom.testsuite.filename}}
-* {{.venom.testsuite.filepath}}
-* {{.venom.testsuite.shortName}}
-* {{.venom.testsuite.workdir}}
-* {{.venom.testsuite}}
-* {{.venom.timestamp}}
-
+- {{.venom.datetime}}
+- {{.venom.executable}}
+- {{.venom.libdir}}
+- {{.venom.outputdir}}
+- {{.venom.testcase}}
+- {{.venom.teststep.number}}
+- {{.venom.testsuite.name}}
+- {{.venom.testsuite.filename}}
+- {{.venom.testsuite.filepath}}
+- {{.venom.testsuite.shortName}}
+- {{.venom.testsuite.workdir}}
+- {{.venom.testsuite}}
+- {{.venom.timestamp}}
 
 ### Secrets variables
 
@@ -601,14 +594,14 @@ Example:
 ```yml
 name: Your Testsuite
 vars:
-  foo : this-value-is-secret
+  foo: this-value-is-secret
 secrets:
   - foo
 testcases:
-- name: myvar_first
-  steps:
-  - type: exec
-    script: "echo myvar {{.foo}}"
+  - name: myvar_first
+    steps:
+      - type: exec
+        script: "echo myvar {{.foo}}"
 ```
 
 The value `this-value-is-secret` will not be printed in your console, `venom.log` and `...dump.json` files.
@@ -617,67 +610,68 @@ The value `this-value-is-secret` will not be printed in your console, `venom.log
 
 ### Keywords
 
-* ShouldEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldEqual.yml)
-* ShouldNotEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotEqual.yml)
-* ShouldAlmostEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldAlmostEqual.yml)
-* ShouldNotAlmostEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotAlmostEqual.yml)
-* ShouldBeNil - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeNil.yml)
-* ShouldNotBeNil - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeNil.yml)
-* ShouldBeTrue - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeTrue.yml)
-* ShouldBeFalse - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeFalse.yml)
-* ShouldBeZeroValue - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeZeroValue.yml)
-* ShouldBeGreaterThan - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeGreaterThan.yml)
-* ShouldBeGreaterThanOrEqualTo - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeGreaterThanOrEqualTo.yml)
-* ShouldBeLessThan - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeLessThan.yml)
-* ShouldBeLessThanOrEqualTo - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeLessThanOrEqualTo.yml)
-* ShouldBeBetween - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeBetween.yml)
-* ShouldNotBeBetween - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeBetween.yml)
-* ShouldBeBetweenOrEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeBetweenOrEqual.yml)
-* ShouldNotBeBetweenOrEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeBetweenOrEqual.yml)
-* ShouldContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldContain.yml)
-* ShouldNotContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotContain.yml)
-* ShouldJSONContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONContain.yml)
-* ShouldNotJSONContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotJSONContain.yml)
-* ShouldJSONContainWithKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONContainWithKey.yml)
-* ShouldJSONContainAllWithKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONContainAllWithKey.yml)
-* ShouldNotJSONContainWithKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotJSONContainWithKey.yml)
-* ShouldContainKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldContainKey.yml)
-* ShouldNotContainKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotContainKey.yml)
-* ShouldBeIn - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeIn.yml)
-* ShouldNotBeIn - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeIn.yml)
-* ShouldBeEmpty - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeEmpty.yml)
-* ShouldNotBeEmpty - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeEmpty.yml)
-* ShouldHaveLength - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHaveLength.yml)
-* ShouldStartWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldStartWith.yml)
-* ShouldNotStartWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotStartWith.yml)
-* ShouldEndWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldEndWith.yml)
-* ShouldNotEndWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotEndWith.yml)
-* ShouldBeBlank - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeBlank.yml)
-* ShouldNotBeBlank - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeBlank.yml)
-* ShouldContainSubstring - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldContainSubstring.yml)
-* ShouldNotContainSubstring - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotContainSubstring.yml)
-* ShouldEqualTrimSpace - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldEqualTrimSpace.yml)
-* ShouldNotExist - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotExist.yml)
-* ShouldHappenBefore - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenBefore.yml)
-* ShouldHappenOnOrBefore - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenOnOrBefore.yml)
-* ShouldHappenAfter - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenAfter.yml)
-* ShouldHappenOnOrAfter - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenOnOrAfter.yml)
-* ShouldHappenBetween - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenBetween.yml)
-* ShouldTimeEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldTimeEqual.yml)
-* ShouldMatchRegex - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldMatchRegex.yml)
-* ShouldJSONEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONEqual.yml)
+- ShouldEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldEqual.yml)
+- ShouldNotEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotEqual.yml)
+- ShouldAlmostEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldAlmostEqual.yml)
+- ShouldNotAlmostEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotAlmostEqual.yml)
+- ShouldBeNil - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeNil.yml)
+- ShouldNotBeNil - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeNil.yml)
+- ShouldBeTrue - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeTrue.yml)
+- ShouldBeFalse - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeFalse.yml)
+- ShouldBeZeroValue - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeZeroValue.yml)
+- ShouldBeGreaterThan - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeGreaterThan.yml)
+- ShouldBeGreaterThanOrEqualTo - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeGreaterThanOrEqualTo.yml)
+- ShouldBeLessThan - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeLessThan.yml)
+- ShouldBeLessThanOrEqualTo - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeLessThanOrEqualTo.yml)
+- ShouldBeBetween - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeBetween.yml)
+- ShouldNotBeBetween - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeBetween.yml)
+- ShouldBeBetweenOrEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeBetweenOrEqual.yml)
+- ShouldNotBeBetweenOrEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeBetweenOrEqual.yml)
+- ShouldContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldContain.yml)
+- ShouldNotContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotContain.yml)
+- ShouldJSONContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONContain.yml)
+- ShouldNotJSONContain - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotJSONContain.yml)
+- ShouldJSONContainWithKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONContainWithKey.yml)
+- ShouldJSONContainAllWithKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONContainAllWithKey.yml)
+- ShouldNotJSONContainWithKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotJSONContainWithKey.yml)
+- ShouldContainKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldContainKey.yml)
+- ShouldNotContainKey - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotContainKey.yml)
+- ShouldBeIn - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeIn.yml)
+- ShouldNotBeIn - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeIn.yml)
+- ShouldBeEmpty - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeEmpty.yml)
+- ShouldNotBeEmpty - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeEmpty.yml)
+- ShouldHaveLength - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHaveLength.yml)
+- ShouldStartWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldStartWith.yml)
+- ShouldNotStartWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotStartWith.yml)
+- ShouldEndWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldEndWith.yml)
+- ShouldNotEndWith - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotEndWith.yml)
+- ShouldBeBlank - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldBeBlank.yml)
+- ShouldNotBeBlank - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotBeBlank.yml)
+- ShouldContainSubstring - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldContainSubstring.yml)
+- ShouldNotContainSubstring - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotContainSubstring.yml)
+- ShouldEqualTrimSpace - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldEqualTrimSpace.yml)
+- ShouldNotExist - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldNotExist.yml)
+- ShouldHappenBefore - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenBefore.yml)
+- ShouldHappenOnOrBefore - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenOnOrBefore.yml)
+- ShouldHappenAfter - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenAfter.yml)
+- ShouldHappenOnOrAfter - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenOnOrAfter.yml)
+- ShouldHappenBetween - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldHappenBetween.yml)
+- ShouldTimeEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldTimeEqual.yml)
+- ShouldMatchRegex - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldMatchRegex.yml)
+- ShouldJSONEqual - [example](https://github.com/ovh/venom/tree/master/tests/assertions/ShouldJSONEqual.yml)
 
 #### `Must` keywords
 
 All the above assertions keywords also have a `Must` counterpart which can be used to create a required passing assertion and prevent test cases (and custom executors) to run remaining steps.
 
 Example:
+
 ```yml
 - steps:
-  - type: exec
-    script: exit 1
-    assertions:
-      - result.code MustEqual 0
+    - type: exec
+      script: exit 1
+      assertions:
+        - result.code MustEqual 0
   # Remaining steps in this context will not be executed
 ```
 
@@ -690,26 +684,27 @@ Supported operators are `and`, `or` and `xor`.
 ```yml
 - name: Assertions operators
   steps:
-  - script: echo 1
-    assertions:
-      - or:
-        - result.systemoutjson ShouldEqual 1 
-        - result.systemoutjson ShouldEqual 2
-      # Nested operators
-      - or:
-        - result.systemoutjson ShouldBeGreaterThanOrEqualTo 1
-        - result.systemoutjson ShouldBeLessThanOrEqualTo 1
+    - script: echo 1
+      assertions:
         - or:
-          - result.systemoutjson ShouldEqual 1
+            - result.systemoutjson ShouldEqual 1
+            - result.systemoutjson ShouldEqual 2
+        # Nested operators
+        - or:
+            - result.systemoutjson ShouldBeGreaterThanOrEqualTo 1
+            - result.systemoutjson ShouldBeLessThanOrEqualTo 1
+            - or:
+                - result.systemoutjson ShouldEqual 1
 ```
 
 More examples are available in [`tests/assertions_operators.yml`](/tests/assertions_operators.yml).
 
-# Write and run your first test suite 
+# Write and run your first test suite
 
 To understand how Venom is working, let's create and run a first testsuite together.
 
 The first assertions that we will do, in this testsuite, are to check whether the site we want to test (a public REST API, OVHcloud API for example):
+
 - is accessible (respond with a 200 status code)
 - responds in less than 5 seconds
 - returns a valid response (which is in JSON format)
@@ -741,7 +736,7 @@ testcases:
 Then, run your testsuite with the following command:
 
 ```bash
-$ venom run 
+$ venom run
 
  • APIIntegrationTest (testsuite.yml)
  	• GET-http-testcase-with-5-seconds-timeout SUCCESS
@@ -768,31 +763,33 @@ Reports exported in XML can be visualized with a xUnit/jUnit Viewer, directly in
 
 ## Debug your testsuites
 
-A *venom.log* file is generated for each `venom run` command.
+A _venom.log_ file is generated for each `venom run` command.
 
 There are two ways to debug a testsuite:
- - use `-v` flag on venom binary.
-   - `$ venom run -v test.yml` will output details for each step
-   - `$ venom run -vv test.yml` will generate *dump.json* files for each teststep.
-   - `$ venom run -vvv test.yml` will generate *pprof* files for CPU profiling.
- - use `info` keyword in your teststep:
-`test.yml` file:
+
+- use `-v` flag on venom binary.
+  - `$ venom run -v test.yml` will output details for each step
+  - `$ venom run -vv test.yml` will generate _dump.json_ files for each teststep.
+  - `$ venom run -vvv test.yml` will generate _pprof_ files for CPU profiling.
+- use `info` keyword in your teststep:
+  `test.yml` file:
+
 ```yml
 name: Exec testsuite
 testcases:
-- name: testA
-  steps:
-  - type: exec
-    script: echo 'foo with a bar here'
-    info:
-      - this a first info
-      - and a second...
-- name: cat json
-  steps:
-  - script: cat exec/testa.json
-    info: "the value of result.systemoutjson is {{.result.systemoutjson}}"
-    assertions:
-    - result.systemoutjson.foo ShouldContainSubstrin bar
+  - name: testA
+    steps:
+      - type: exec
+        script: echo 'foo with a bar here'
+        info:
+          - this a first info
+          - and a second...
+  - name: cat json
+    steps:
+      - script: cat exec/testa.json
+        info: "the value of result.systemoutjson is {{.result.systemoutjson}}"
+        assertions:
+          - result.systemoutjson.foo ShouldContainSubstrin bar
 ```
 
 ```bash
@@ -820,30 +817,29 @@ vars:
   foo: bar
 
 testcases:
-- name: init
-  steps:
-  - type: exec
-    script: echo {{.foo}}
-    assertions:
-    - result.code ShouldEqual 0
-    - result.systemout ShouldContainSubstring bar
+  - name: init
+    steps:
+      - type: exec
+        script: echo {{.foo}}
+        assertions:
+          - result.code ShouldEqual 0
+          - result.systemout ShouldContainSubstring bar
 
-- name: do-not-skip-this
-  skip: 
-  - foo ShouldNotBeEmpty
-  steps:
-  - type: exec
-    script: exit 0
+  - name: do-not-skip-this
+    skip:
+      - foo ShouldNotBeEmpty
+    steps:
+      - type: exec
+        script: exit 0
 
-- name: skip-this
-  skip: 
-    - foo ShouldBeEmpty
-  steps:
-  - type: exec
-    script: command_not_found
-    assertions:
-    - result.code ShouldEqual 0
-
+  - name: skip-this
+    skip:
+      - foo ShouldBeEmpty
+    steps:
+      - type: exec
+        script: command_not_found
+        assertions:
+          - result.code ShouldEqual 0
 ```
 
 A `skip` statement may also be placed at steps level to partially execute a testcase.
@@ -855,23 +851,22 @@ vars:
   foo: bar
 
 testcases:
-- name: skip-one-of-these
-  steps:
-  - name: do-not-skip-this
-    type: exec
-    script: exit 0
-    assertions:
-    - result.code ShouldEqual 0
-    skip:
-    - foo ShouldNotBeEmpty
-  - name: skip-this
-    type: exec
-    script: exit 1
-    assertions:
-    - result.code ShouldEqual 0
-    skip:
-    - foo ShouldBeEmpty
-
+  - name: skip-one-of-these
+    steps:
+      - name: do-not-skip-this
+        type: exec
+        script: exit 0
+        assertions:
+          - result.code ShouldEqual 0
+        skip:
+          - foo ShouldNotBeEmpty
+      - name: skip-this
+        type: exec
+        script: exit 1
+        assertions:
+          - result.code ShouldEqual 0
+        skip:
+          - foo ShouldBeEmpty
 ```
 
 ## Iterating over data
@@ -893,19 +888,20 @@ The following data types are supported, each exposing contexted variables `.inde
   - It can be either inherited from vars file, or interpolated from a previous step result
 
 For instance, the following example will iterate over an array of two items containing maps:
+
 ```yaml
 - name: range with hardcoded array
   steps:
-  - type: exec
-    range:
-      - actual: hello
-        expected: hello
-      - actual: world
-        expected: world
-    script: echo "{{.value.actual}}"
-    assertions:
-    - result.code ShouldEqual 0
-    - result.systemout ShouldEqual "{{.value.expected}}"
+    - type: exec
+      range:
+        - actual: hello
+          expected: hello
+        - actual: world
+          expected: world
+      script: echo "{{.value.actual}}"
+      assertions:
+        - result.code ShouldEqual 0
+        - result.systemout ShouldEqual "{{.value.expected}}"
 ```
 
 More examples are available in [`tests/ranged.yml`](/tests/ranged.yml).
@@ -925,34 +921,31 @@ this is probably because you try to use a json value instead of a string. You sh
 Wrong:
 
 ```yml
-...
+---
 vars:
   body: >-
-      {
-        "the-attribute": "the-value"
-      }
-...
+    {
+      "the-attribute": "the-value"
+    }
+---
 steps:
-- type: http
-  body: "{{.body}}"
-...
+  - type: http
+    body: "{{.body}}"
 ```
 
 OK:
 
-
 ```yml
-...
+---
 vars:
   body: >-
-      {
-        "the-attribute": "the-value"
-      }
-...
+    {
+      "the-attribute": "the-value"
+    }
+---
 steps:
-- type: http
-  body: '{{.body}}'
-...
+  - type: http
+    body: "{{.body}}"
 ```
 
 Note the simple quote on the value of `body`.
@@ -967,6 +960,7 @@ To display properly the venom output, you probably will have to export the envir
 [How to write your own executor?](https://github.com/ovh/venom/tree/master/executors#venom-executor)
 
 ## How to compile?
+
 ```bash
 $ make build
 ```

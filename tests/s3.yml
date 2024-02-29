@@ -1,0 +1,38 @@
+name: S3 testsuite
+testcases:
+  - name: read write delete
+    steps:
+      - type: s3
+        command: create-or-reset-bucket
+        endpoint: https://endpoint/
+        user: user
+        password: password
+        use_ssl: false
+        bucket_name: mybucket
+      - type: s3
+        command: write-object
+        endpoint: https://endpoint/
+        user: user
+        password: password
+        use_ssl: false
+        bucket_name: mybucket
+        object_name: myobject.txt
+        obeject_content: foo
+      - type: s3
+        command: read-object
+        endpoint: https://endpoint/
+        user: user
+        password: password
+        use_ssl: false
+        bucket_name: mybucket
+        object_name: myobject.txt
+        assertions:
+          - result.object_content ShouldEqual foo
+      - type: s3
+        command: delete-object
+        endpoint: https://endpoint/
+        user: user
+        password: password
+        use_ssl: false
+        bucket_name: mybucket
+        object_name: myobject.txt
